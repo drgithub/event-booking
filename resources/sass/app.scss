@@ -1,0 +1,22 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+
+// Variables
+@import "variables";
+
+@import "~@coreui/icons/scss/coreui-icons.scss";
+@import "~flag-icon-css/sass/flag-icon.scss";
+@import "~font-awesome/scss/font-awesome.scss";
+@import "~simple-line-icons/scss/simple-line-icons.scss";
+
+// Bootstrap
+@import "~bootstrap/scss/bootstrap";
+// Core UI
+@import "~@coreui/coreui/scss/coreui";
+
+@import "~pace-progress/themes/blue/pace-theme-minimal.css";
+
+.navbar-laravel {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
