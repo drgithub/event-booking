@@ -13,7 +13,7 @@ try {
     window.moment().format();
 
     require("bootstrap");
-    require("pace-progress");
+    // require("pace-progress");
     require("perfect-scrollbar");
     require("@coreui/coreui");
 } catch (e) {}

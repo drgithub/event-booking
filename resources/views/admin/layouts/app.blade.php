@@ -27,7 +27,7 @@
     		<ul class="nav navbar-nav ml-auto pr-3">
     			<li class="nav-item dropdown">
     				<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-    					<img class="img-avatar mr-1" src="{{ asset('storage/default2.png') }}">
+    					<img class="img-avatar mr-1" src="{{ asset('default2.png') }}">
 						<span class="d-none d-sm-inline">Admin</span>
     				</a>
     				<div class="dropdown-menu dropdown-menu-right">

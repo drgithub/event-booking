@@ -46,13 +46,13 @@
 @endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/datatable.css') . '?r=' . rand()  }}" />
-    <link rel="stylesheet" href="{{ asset('storage/bootstrap4-dialog/css/bootstrap-dialog.min.css') . '?r=' . rand()  }}" />
-    <link rel="stylesheet" href="{{ asset('storage/datetime-picker/css/bootstrap-datetimepicker.min.css') . '?r=' . rand()  }}" />
+    <link rel="stylesheet" href="{{ asset('bootstrap4-dialog/css/bootstrap-dialog.min.css') . '?r=' . rand()  }}" />
+    <link rel="stylesheet" href="{{ asset('datetime-picker/css/bootstrap-datetimepicker.min.css') . '?r=' . rand()  }}" />
 @endsection
 @section('scripts')
     <script src="{{ asset('/js/datatable.js') . '?r=' . rand() }}"></script>
-    <script src="{{ asset('storage/bootstrap4-dialog/js/bootstrap-dialog.min.js') . '?r=' . rand() }}"></script>
-    <script src="{{ asset('storage/datetime-picker/js/bootstrap-datetimepicker.min.js') . '?r=' . rand() }}"></script>
+    <script src="{{ asset('bootstrap4-dialog/js/bootstrap-dialog.min.js') . '?r=' . rand() }}"></script>
+    <script src="{{ asset('datetime-picker/js/bootstrap-datetimepicker.min.js') . '?r=' . rand() }}"></script>
     <script>
         var formDialog;
 

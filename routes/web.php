@@ -12,7 +12,7 @@
 */
 
 // Route::get('/', function () {
-//     return view('welcome');
+//     return "Hi";
 // });
 Route::namespace('Admin')->prefix('admin')->group(function () {
     Route::get('/', 'DashboardController@index')->name('root');
