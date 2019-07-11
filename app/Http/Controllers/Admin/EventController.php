@@ -9,83 +9,55 @@ use App\Http\Controllers\Admin\BaseController as Controller;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $events = Event::all();
-
-        return View::make('admin::events.index', compact('events'));
+        return View::make('admin::events.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return View::make('admin::events.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $post = Event::create($request->all());
-        return response()->json($post);
+        $message = "";
+        $status = 0;
+
+        $guestList = explode(',', $request->guests_email);
+        $event = Event::create($request->all());
+
+        $newGuestList = array();
+        foreach ($guestList as $guest) {
+            array_push($newGuestList, new \App\Guest(['email' => $guest]));
+        }
+
+        if ($event->guests()->saveMany($newGuestList)) {
+            $status = 1;
+            $message = "The event has been successfully added.";
+        } else {
+            $message = "Sorry, something went wrong. We are working on it and we'll get it fixed as soon as we can.";
+        }
+
+        return response()->json([
+            "status" => $status,
+            "message" => $message
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Event $event)
-    {
-        return View::make('admin::events.show', compact('event'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Event $event)
     {
+        // dd($event->start_dt->to);
         return View::make('admin::events.edit', compact('event'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Event $event)
     {
-        $result = $event->update($request->all());
-        dd($result);
+        $event->update($request->all());
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Event $event)
     {
-        //
+        $event->delete();
     }
 }

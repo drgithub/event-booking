@@ -11,10 +11,13 @@
 |
 */
 
-// Route::get('/', function () {
-//     return "Hi";
-// });
+// Route::get('/', 'Home')->name('home');
+// Route::get('login', 'Login')->name('login');
+// Route::get('register', 'Register')->name('register');
+
 Route::namespace('Admin')->prefix('admin')->group(function () {
     Route::get('/', 'DashboardController@index')->name('root');
-    Route::resource('events', 'EventController');
+    Route::get('/list/{table}', 'ListController@index')->name('list');
+
+    Route::resource('/events', 'EventController');
 });
