@@ -9,13 +9,7 @@ class Event extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = [
-        "name",
-        "location",
-        "description",
-        "start_dt",
-        "end_dt"
-    ];
+    protected $guarded = [];
 
     public function guests()
     {

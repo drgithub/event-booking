@@ -8,9 +8,10 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <form id="eventForm" method="POST">
+            <form id="eventForm">
                 @csrf
                 <div class="card card-accent-primary">
+                    <input type="hidden" name="event_id" value="{{ $event->id }}">
                     <div class="card-header actions">
                         <button id="eventSave" class="btn btn-primary" type="submit">Save</button>
                         <button id="eventClear" class="btn btn-secondary" type="button">Clear</button>
@@ -19,25 +20,25 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Event Name</label>
                             <div class="col">
-                                <input type="text"  class="form-control" name="name" value="{{$event->name}}">
+                                <input type="text"  class="form-control" name="name" value="{{ $event->name }}">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Location</label>
                             <div class="col">
-                                <input type="text" class="form-control" name="location" value="{{$event->location}}">
+                                <input type="text" class="form-control" name="location" value="{{ $event->location }}">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Description</label>
                             <div class="col">
-                                <textarea rows="6" class="form-control" name="description" id="description">{{$event->description}}</textarea>
+                                <textarea rows="6" class="form-control" name="description" id="description">{{ $event->description }}</textarea>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Start</label>
                             <div class="input-group col">
-                                <input id="start_dt" type="text" class="form-control date-picker" name="start_dt" value="{{$event->start_dt}}">
+                                <input id="start_dt" type="text" class="form-control date-picker" name="start_dt" value="{{ renderDate($event->start_dt, 'l, F d, Y h:i A') }}">
                                 <div class="input-group-append">
                                     <span class="input-group-text">
                                         <i class="fa fa-calendar"></i>
@@ -48,7 +49,7 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">End</label>
                             <div class="input-group col">
-                                <input  id="end_dt" type="text" class="form-control date-picker" name="end_dt">
+                                <input id="end_dt" type="text" class="form-control date-picker" name="end_dt" value="{{ renderDate($event->end_dt, 'l, F d, Y h:i A') }}">
                                 <div class="input-group-append">
                                     <span class="input-group-text">
                                         <i class="fa fa-calendar"></i>
@@ -59,7 +60,9 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Guest</label>
                             <div class="col">
-                                <input type="text" class="form-control" id="guest" name="guests_email">
+                                <input type="text" class="form-control" id="guest" name="guests_email" 
+                                    value="{{ $guestEmail1  .  $guestEmail2 }}"
+                                >
                             </div>
                         </div>
                     </div>
@@ -96,9 +99,6 @@
             }
         });
 
-        $('#start_dt').allowInputToggle(true);
-
-
         $("#guest").tagsinput({
             confirmKeys: [9, 13, 32],
             trimValue: true,
@@ -126,7 +126,7 @@
             },
             submitHandler: function() {
                 $.ajax({
-                    type: "POST",
+                    type: "PATCH",
                     dataType: "json",
                     data: {
                         name: $('[name=name]').val(),
@@ -136,13 +136,11 @@
                         end_dt: moment($('[name=end_dt]').val()).format('YYYY-MM-DD HH:mm:ss'),
                         guests_email: $('[name=guests_email]').val()
                     },
-                    url: "{{ route('events.store') }}",
+                    url: "{{ route('events.update', $event->id) }}",
                     success: function(response) {
                         let status = "";
 
                         if (response.status) {
-                            $('#eventForm')[0].reset();
-                            $("#guest").tagsinput('removeAll');
                             status = 'success';
                         } else {
                             status = 'danger';
