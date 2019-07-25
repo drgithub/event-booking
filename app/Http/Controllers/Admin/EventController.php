@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Event;
 use Illuminate\Http\Request;
+use App\Mail\EventInvitation;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Admin\BaseController as Controller;
 
@@ -14,6 +16,11 @@ class EventController extends Controller
         return View::make('admin::events.index');
     }
 
+    public function show(Event $event)
+    {
+        return view('admin.events.show', compact('event'));
+    }
+    
     public function create()
     {
         return View::make('admin::events.create');
@@ -28,8 +35,11 @@ class EventController extends Controller
         $event = Event::create($request->except('guests_email'));
 
         $newGuestList = array();
+
         foreach ($guestList as $guest) {
             array_push($newGuestList, new \App\Guest(['email' => $guest]));
+
+            Mail::to($guest)->send(new EventInvitation($event));
         }
 
         if ($event->guests()->saveMany($newGuestList)) {
@@ -48,10 +58,8 @@ class EventController extends Controller
     public function edit(Event $event)
     {
         // dd($event->start_dt->to);
-        $guestEmail1 = "guest ";
-        $guestEmail2 = "guest2 ";
-
-        return View::make('admin::events.edit', compact('event', 'guestEmail1', 'guestEmail2'));
+        $guestEmail = array("qweqwe, qweqwe");
+        return View::make('admin::events.edit', compact('event', 'guestEmail'));
     }
 
     public function update(Request $request, Event $event)

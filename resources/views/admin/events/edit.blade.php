@@ -61,7 +61,7 @@
                             <label class="col-md-3 col-form-label">Guest</label>
                             <div class="col">
                                 <input type="text" class="form-control" id="guest" name="guests_email" 
-                                    value="{{ $guestEmail1  .  $guestEmail2 }}"
+                               
                                 >
                             </div>
                         </div>
