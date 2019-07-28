@@ -12,14 +12,16 @@ class EventInvitation extends Mailable
     use Queueable, SerializesModels;
 
     public $event;
+    public $guest_id;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($event)
+    public function __construct($event, $guest_id)
     {
         $this->event = $event;
+        $this->guest_id = $guest_id;
     }
 
     /**
@@ -30,6 +32,9 @@ class EventInvitation extends Mailable
     public function build()
     {
         return $this->from('repuestobrian@gmail.com')
-                    ->view('mails.eventinvitation');
+                    ->view('mails.eventinvitation')
+                    ->with([
+                        'guest_id' => $this->guest_id,
+                    ]);
     }
 }

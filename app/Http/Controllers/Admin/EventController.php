@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Event;
+use App\Guest;
 use Illuminate\Http\Request;
 use App\Mail\EventInvitation;
 use Illuminate\Support\Facades\Mail;
@@ -16,9 +17,11 @@ class EventController extends Controller
         return View::make('admin::events.index');
     }
 
-    public function show(Event $event)
+    public function show($id)
     {
-        return view('admin.events.show', compact('event'));
+        $guest = Guest::find($id);
+
+        return view('admin.events.show', compact('guest'));
     }
     
     public function create()
@@ -38,11 +41,13 @@ class EventController extends Controller
 
         foreach ($guestList as $guest) {
             array_push($newGuestList, new \App\Guest(['email' => $guest]));
-
-            Mail::to($guest)->send(new EventInvitation($event));
         }
 
         if ($event->guests()->saveMany($newGuestList)) {
+            foreach ($event->guests as $guest) {
+                Mail::to($guest)->send(new EventInvitation($event, $guest->id));
+            }
+            
             $status = 1;
             $message = "The event has been successfully added.";
         } else {
@@ -81,5 +86,26 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         $event->delete();
+    }
+
+    public function acceptInvitation()
+    {
+        dd(request());
+        $guest = Guest::whereEventId(request()->event_id)
+                ->whereId(request()->guest_id)
+                ->get()
+                ->first()
+                ->update(['status' => 1]);
+        
+        if ($guest) {
+            $message = 'Accepted the Invitation';
+        } else {
+            $message = 'Something Went Wrong, Please try again';
+        }
+
+        return response()->json([
+            'message' => $message,
+            'status'  => $guest
+        ]); 
     }
 }

@@ -1,22 +1,20 @@
 @extends('admin::layouts.app')
 @section('content')
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="invitationModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{ $event->name }}</h5>
+        <input type="hidden" id="event_data" event-id="{{ $guest->event->id }}" guest-id="{{ $guest->id }}">
+        <h5 class="modal-title" id="invitationModalLabel">{{ $guest->event->name }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div>
-            {{ $event->description }}
+            {{ $guest->event->description }}
         </div>
         <div>
             Participants
@@ -31,7 +29,7 @@
 </div>
 @endsection
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('datetime-picker/css/bootstrap-datetimepicker.min.css') . '?r=' . rand()  }}" />
+  <link rel="stylesheet" href="{{ asset('datetime-picker/css/bootstrap-datetimepicker.min.css') . '?r=' . rand()  }}" />
     <link rel="stylesheet" href="{{ asset('bootstrap4-tagsinput/tagsinput.css') . '?r=' . rand()  }}" />
 @endsection
 @section('custom')
@@ -42,14 +40,29 @@
     <script src="{{ asset('bootstrap4-tagsinput/tagsinput.js') . '?r=' . rand() }}"></script>
     <script src="{{ asset('jquery-validation/dist/jquery.validate.js') . '?r=' . rand() }}"></script>
     <script>
-        $("#exampleModal").modal('show');
-        
+        $('#invitationModal').modal('show');
+
         $('.decline').click(() => {
-            alert('qwe')
+            alert('qwe');
         });
 
         $('.accept').click(() => {
-          alert('zxczxc');
-        })
+          let event_id = $('#event_data').attr('event-id');
+          let guest_id = $('#event_data').attr('guest-id');
+          let token = $('meta[name=csrf-token]').val();
+          console.log(token);
+          $.ajax({
+            url: '/event/acceptInvitation',
+            type: 'POST',
+            data: {
+              _token: token,
+              event_id: event_id,
+              guest_id: guest_id,
+            },
+            success: ((response) => {
+              console.log(response);
+            })
+          });
+        });
     </script>
 @endsection

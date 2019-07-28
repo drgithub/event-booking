@@ -5,6 +5,6 @@ Hello!
 	<br>
 	<p>Click the Link below to check the details and respond!</p>
 	<br>
-	<p> {{ request()->url() . '/' . $event->id }}</p>
+	<p> {{ url('/') . '/event/guest' . '/' . $guest_id }}</p>
 </div>
  
