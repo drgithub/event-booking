@@ -90,7 +90,6 @@ class EventController extends Controller
 
     public function acceptInvitation()
     {
-        dd(request());
         $guest = Guest::whereEventId(request()->event_id)
                 ->whereId(request()->guest_id)
                 ->get()

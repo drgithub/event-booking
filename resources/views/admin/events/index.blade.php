@@ -19,6 +19,7 @@
                         <th>Date</th>
                         <th>Location</th>
                         <th>Guests</th>
+                        <th>Going</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -37,11 +38,8 @@
     <script src="{{ asset('datatables/dataTables.bootstrap4.min.js') . '?r=' . rand() }}"></script>
     <script src="{{ asset('bootstrap4-dialog/js/bootstrap-dialog.min.js') . '?r=' . rand() }}"></script>
     <script src="{{ asset('datetime-picker/js/bootstrap-datetimepicker.min.js') . '?r=' . rand() }}"></script>
+    <script src="{{ asset('sweetalert/dist/sweetalert.min.js') . '?r=' . rand() }}"></script>
     <script>
-        $('.eventCreate').on('click', function() {
-            formModal($(this));
-        });
-
         $('#list').DataTable({
             "processing": true,
             "serverSide": true,
@@ -57,11 +55,35 @@
                     )+1);
                 }
             },
+            "initComplete": function(settings, json) {
+                $(".eventDelete").on('click', function () {
+                    let event_id = $(this).attr('data-id');
+
+                    swal({
+                      title: "Are you sure?",
+                      text: "Once deleted, you will not be able to recover this imaginary file!",
+                      icon: "warning",
+                      buttons: true,
+                      dangerMode: true,
+                    }).then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: `/admin/events/${event_id}`,
+                                type: 'DELETE',
+                                success: function() {
+                                    alert('qweqwe');
+                                }
+                            });
+                        }
+                    })
+                });
+            },
             "columns": [
                 { "data": "name" },
                 { "data": "date" },
                 { "data": "location" },
                 { "data": "guests" },
+                { "data": "going" },
                 { "data": "actions" }
             ],
             'columnDefs': [{
