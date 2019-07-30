@@ -40,7 +40,9 @@ class EventController extends Controller
         $newGuestList = array();
 
         foreach ($guestList as $guest) {
-            array_push($newGuestList, new \App\Guest(['email' => $guest]));
+            if (filter_var($guest, FILTER_VALIDATE_EMAIL)) {
+                array_push($newGuestList, new \App\Guest(['email' => $guest]));
+            }
         }
 
         if ($event->guests()->saveMany($newGuestList)) {

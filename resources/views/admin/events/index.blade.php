@@ -71,7 +71,12 @@
                                 url: `/admin/events/${event_id}`,
                                 type: 'DELETE',
                                 success: function() {
-                                    alert('qweqwe');
+                                    swal({
+                                      title: "Deleted Successfully",
+                                      icon: "success",
+                                    }).then(() => {
+                                        location.reload();
+                                    })
                                 }
                             });
                         }

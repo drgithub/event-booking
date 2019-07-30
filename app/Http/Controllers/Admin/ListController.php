@@ -17,11 +17,14 @@ class ListController extends Controller
         if ($table === "events") {
             $paginate = DB::table($table)
                 ->select('id', 'name', 'location', 'start_dt', 'deleted_at')
-                ->where('name', 'like', '%' . $request->search['value'] . '%')
-                ->orWhere('location', 'like', '%' . $request->search['value'] . '%')
-                ->where('deleted_at', '==', null)
+                ->where(function($query) use($request){
+                    $query->where('name', 'like', '%' . $request->search['value'] . '%')
+                          ->orWhere('location', 'like', '%' . $request->search['value'] . '%');
+                })
+                ->whereNull('deleted_at')
                 ->paginate($request->length);
-
+                
+                
             $results = collect($paginate->items())->map(function ($item, $key) {
                 return array(
                     'DT_RowId' => $item->id,
