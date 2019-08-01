@@ -75,18 +75,33 @@ class EventController extends Controller
 
     public function update(Request $request, Event $event)
     {
+        $currentGuests = [];
+        $removedEmails = [];
+
         $update = $event->update($request->except('guests_email'));
-        $newGuests = [];
         $guestEmails = explode(",", $request->guests_email);
+
+        foreach ($event->guests as $guest) {
+            array_push($currentGuests, $guest->email);
+        }
+
+        $removedEmails = array_diff($currentGuests, $guestEmails);
 
         if ($update) {
             foreach ($guestEmails as $guestEmail) {
-                $guest = Guest::whereEmail($guestEmail)->get();
+                if (filter_var($guestEmail, FILTER_VALIDATE_EMAIL)) {
+                    $guest = $event->guests()->whereEmail($guestEmail)->get();
 
-                if ($guest->isEmpty()) {
-                    $newGuest = $event->guests()->create(['email' => $guestEmail]);
-                    Mail::to($newGuest)->send(new EventInvitation($event, $newGuest->id));
+                    if ($guest->isEmpty()) {
+                        $newGuest = $event->guests()->create(['email' => $guestEmail]);
+                        Mail::to($newGuest)->send(new EventInvitation($event, $newGuest->id));
+                    }
                 }
+            }
+
+            foreach ($removedEmails as $email) {
+                $guest = $event->guests()->whereEmail($email)->get()->first();
+                $guest->delete();
             }
 
             $message = "Event successfully Updated!";
