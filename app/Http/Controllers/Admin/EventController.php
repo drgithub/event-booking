@@ -64,16 +64,31 @@ class EventController extends Controller
 
     public function edit(Event $event)
     {
-        // dd($event->start_dt->to);
-        $guestEmail = array("qweqwe, qweqwe");
-        return View::make('admin::events.edit', compact('event', 'guestEmail'));
+        $guestEmails = "";
+
+        foreach ($event->guests as $guest) {
+            $guestEmails .= ',' . $guest->email;
+        }
+
+        return View::make('admin::events.edit', compact('event', 'guestEmails'));
     }
 
     public function update(Request $request, Event $event)
     {
         $update = $event->update($request->except('guests_email'));
-        
+        $newGuests = [];
+        $guestEmails = explode(",", $request->guests_email);
+
         if ($update) {
+            foreach ($guestEmails as $guestEmail) {
+                $guest = Guest::whereEmail($guestEmail)->get();
+
+                if ($guest->isEmpty()) {
+                    $newGuest = $event->guests()->create(['email' => $guestEmail]);
+                    Mail::to($newGuest)->send(new EventInvitation($event, $newGuest->id));
+                }
+            }
+
             $message = "Event successfully Updated!";
         } else {
             $message = "Sorry, something went wrong. We are working on it and we'll get it fixed as soon as we can.";

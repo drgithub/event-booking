@@ -60,7 +60,7 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Guest</label>
                             <div class="col">
-                                <input type="text" class="form-control" id="guest" name="guests_email" value="">
+                                <input type="text" class="form-control" id="guest" name="guests_email" data-role="tagsinput" value="{{ $guestEmails }}">
                             </div>
                         </div>
                     </div>
@@ -81,10 +81,6 @@
     <script src="{{ asset('bootstrap4-tagsinput/tagsinput.js') . '?r=' . rand() }}"></script>
     <script src="{{ asset('jquery-validation/dist/jquery.validate.js') . '?r=' . rand() }}"></script>
     <script>
-        $(document).ready(() => {
-                        $('#guest').tagsinput('add', {"id":"1","value":"painting-works"});
-        });
-
         $('.date-picker').datetimepicker({
             showTodayButton: true,
             showClear: true,
@@ -127,6 +123,8 @@
                 event.code !== "Tab" && event.code !== "ShiftLeft" && event.code !== "ShiftRight" && $(element).valid();
             },
             submitHandler: function() {
+                $('#eventSave').attr('disabled', true);
+
                 $.ajax({
                     type: "PATCH",
                     dataType: "json",
@@ -140,6 +138,7 @@
                     },
                     url: "{{ route('events.update', $event->id) }}",
                     success: function(response) {
+                        $('#eventSave').attr('disabled', false);
                         let status = "";
 
                         if (response.status) {

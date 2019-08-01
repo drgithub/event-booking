@@ -123,6 +123,7 @@
                 event.code !== "Tab" && event.code !== "ShiftLeft" && event.code !== "ShiftRight" && $(element).valid();
             },
             submitHandler: function() {
+                $('#eventSave').attr('disabled', true);
                 $.ajax({
                     type: "POST",
                     dataType: "json",
@@ -136,6 +137,7 @@
                     },
                     url: "{{ route('events.store') }}",
                     success: function(response) {
+                        $('#eventSave').attr('disabled', false);
                         let status = "";
 
                         if (response.status) {
