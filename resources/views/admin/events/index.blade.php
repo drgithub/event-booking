@@ -74,7 +74,7 @@
             </a>
         </div>
         <div class="card-body">
-            <table id="list" class="display nowrap table table-striped table-bordered">
+            <table id="list" class="display nowrap table table-striped table-bordered w-100">
                 <thead>
                     <tr>
                         <th>Event Name</th>
