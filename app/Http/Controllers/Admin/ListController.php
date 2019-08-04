@@ -23,14 +23,14 @@ class ListController extends Controller
                 })
                 ->whereNull('deleted_at')
                 ->paginate($request->length);
-                
-                
+
+
             $results = collect($paginate->items())->map(function ($item, $key) {
                 $event = $this->getEvent($item->id);
 
                 return array(
                     'DT_RowId' => $item->id,
-                    'name' => '<a href="" class="eventView"  data-action="view" data-id="'.$item->id.'">'.$item->name.'</a>',
+                    'name' => '<a href="#" class="eventView"  data-action="view" data-id="'.$item->id.'">'.$item->name.'</a>',
                     'date' => Carbon::parse($item->start_dt)->format('l, F d, Y h:iA'),
                     'location' => $item->location,
                     'guests' => $event->guests->count(),
