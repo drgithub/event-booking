@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-2 col-sm-6">
             <div class="card">
-                <div class="card-body events">
+                <div class="card-body events event-card" style="cursor: pointer;">
                     <div class="h1 text-muted text-right mb-4">
                         <i class="icon-calendar"></i>
                     </div>

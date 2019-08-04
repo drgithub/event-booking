@@ -2,6 +2,14 @@
 @section('title', 'Event Booking - Events')
 @section('title2', 'Events')
 @section('breadcrumb')
+    <style>
+        .swal-button--confirm, .swal-button--cancel{
+            width: 200px;
+            border: 2px solid white !important;
+            outline: none;
+        }
+
+    </style>
     <li class="breadcrumb-item active"><a href="{{ route('events.index') }}">Events</a></li>
 @endsection
 @section('content')
@@ -46,15 +54,15 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="end_date" class="col-sm-2 col-form-label">End</label>
+                <label for="end_date" class="col-sm-2 col-form-label">Guests</label>
                 <div class="col-sm-10 taginput-field">
                     <input type="text" class="form-control guests"readonly>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Decline</button>
-            <a href="#" class="btn btn-primary edit-event">Edit</a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <a href="#" class="btn btn-success edit-event">Edit</a>
         </div>
         </div>
     </div>
@@ -66,20 +74,18 @@
             </a>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="list" class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Event Name</th>
-                            <th>Date</th>
-                            <th>Location</th>
-                            <th>Guests</th>
-                            <th>Going</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+            <table id="list" class="display nowrap table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Guests</th>
+                        <th>Going</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </div>
 @endsection
@@ -100,6 +106,7 @@
         $('#list').DataTable({
             "processing": true,
             "serverSide": true,
+            "scrollX": true,
             "ajax": {
                 "url": "/admin/list/events",
                 "data": function (d, settings) {
@@ -112,54 +119,6 @@
                     )+1);
                 }
             },
-            // "initComplete": function(settings, json) {
-            //     $(".eventDelete").on('click', function () {
-            //         let event_id = $(this).attr('data-id');
-            //
-            //         swal({
-            //           title: "Are you sure to delete this event?",
-            //           icon: "warning",
-            //           buttons: ['Cancel', 'Yes, Proceed'],
-            //         }).then((willDelete) => {
-            //             if (willDelete) {
-            //                 $.ajax({
-            //                     url: `/admin/events/${event_id}`,
-            //                     type: 'DELETE',
-            //                     success: function() {
-            //                         swal({
-            //                           title: "Deleted Successfully",
-            //                           icon: "success",
-            //                         }).then(() => {
-            //                             location.reload();
-            //                         })
-            //                     }
-            //                 });
-            //             }
-            //         })
-            //     });
-            //
-            //     $(".eventView").on('click', function(e) {
-            //         e.preventDefault();
-            //         let eventId = $(this).attr('data-id');
-            //
-            //         $.ajax({
-            //             url: `/event/details/${eventId}`,
-            //             type: 'GET',
-            //             success: function(response) {
-            //                 let eventData = response.event;
-            //                 console.log(eventData);
-            //                 $('.name').val(eventData.name);
-            //                 $('.location').val(eventData.location);
-            //                 $('.description').val(eventData.description);
-            //                 $('.start-date').val(eventData.start_dt);
-            //                 $('.event-date').val(eventData.end_dt);
-            //                 $('.guests').val(response.guests);
-            //                 $('.edit-event').attr('href', `/admin/events/${eventId}/edit`)
-            //                 $("#viewEventModal").modal('show');
-            //             }
-            //         });
-            //     });
-            // },
             "columns": [
                 { "data": "name" },
                 { "data": "date" },
@@ -181,7 +140,10 @@
             swal({
               title: "Are you sure to delete this event?",
               icon: "warning",
-              buttons: ['Cancel', 'Yes, Proceed'],
+              buttons: {
+                confirm: 'Yes, proceed',
+                cancel: 'Cancel'
+            },
             }).then((willDelete) => {
                 if (willDelete) {
                     $.ajax({
@@ -209,7 +171,6 @@
                 type: 'GET',
                 success: function(response) {
                     let eventData = response.event;
-                    console.log(eventData);
                     $('.name').val(eventData.name);
                     $('.location').val(eventData.location);
                     $('.description').val(eventData.description);

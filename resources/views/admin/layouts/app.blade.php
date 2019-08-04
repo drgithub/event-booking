@@ -53,8 +53,8 @@
     </button>
     <ul class="nav navbar-nav ml-auto">
       <li class="nav-item dropdown">
-        <a class="nav-link d-none d-md-block" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-          <img class="img-avatar"  src="{{ asset('img/default2.png') }}" alt="admin@bootstrapmaster.com"> Admin&nbsp;&nbsp;&nbsp;&nbsp;
+        <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+          <img class="img-avatar" src="{{ asset('img/default2.png') }}" alt="admin@bootstrapmaster.com"> <span class="d-none d-md-inline">Admin&nbsp;&nbsp;&nbsp;&nbsp;</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
           <div class="dropdown-header text-center">
