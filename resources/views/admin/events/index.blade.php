@@ -112,54 +112,54 @@
                     )+1);
                 }
             },
-            "initComplete": function(settings, json) {
-                $(".eventDelete").on('click', function () {
-                    let event_id = $(this).attr('data-id');
-
-                    swal({
-                      title: "Are you sure to delete this event?",
-                      icon: "warning",
-                      buttons: ['Cancel', 'Yes, Proceed'],
-                    }).then((willDelete) => {
-                        if (willDelete) {
-                            $.ajax({
-                                url: `/admin/events/${event_id}`,
-                                type: 'DELETE',
-                                success: function() {
-                                    swal({
-                                      title: "Deleted Successfully",
-                                      icon: "success",
-                                    }).then(() => {
-                                        location.reload();
-                                    })
-                                }
-                            });
-                        }
-                    })
-                });
-
-                $(".eventView").on('click', function(e) {
-                    e.preventDefault();
-                    let eventId = $(this).attr('data-id');
-                    
-                    $.ajax({
-                        url: `/event/details/${eventId}`,
-                        type: 'GET',
-                        success: function(response) {
-                            let eventData = response.event;
-                            console.log(eventData);
-                            $('.name').val(eventData.name);
-                            $('.location').val(eventData.location);
-                            $('.description').val(eventData.description);
-                            $('.start-date').val(eventData.start_dt);
-                            $('.event-date').val(eventData.end_dt);
-                            $('.guests').val(response.guests);
-                            $('.edit-event').attr('href', `/admin/events/${eventId}/edit`)
-                            $("#viewEventModal").modal('show');
-                        }
-                    });
-                });
-            },
+            // "initComplete": function(settings, json) {
+            //     $(".eventDelete").on('click', function () {
+            //         let event_id = $(this).attr('data-id');
+            //
+            //         swal({
+            //           title: "Are you sure to delete this event?",
+            //           icon: "warning",
+            //           buttons: ['Cancel', 'Yes, Proceed'],
+            //         }).then((willDelete) => {
+            //             if (willDelete) {
+            //                 $.ajax({
+            //                     url: `/admin/events/${event_id}`,
+            //                     type: 'DELETE',
+            //                     success: function() {
+            //                         swal({
+            //                           title: "Deleted Successfully",
+            //                           icon: "success",
+            //                         }).then(() => {
+            //                             location.reload();
+            //                         })
+            //                     }
+            //                 });
+            //             }
+            //         })
+            //     });
+            //
+            //     $(".eventView").on('click', function(e) {
+            //         e.preventDefault();
+            //         let eventId = $(this).attr('data-id');
+            //
+            //         $.ajax({
+            //             url: `/event/details/${eventId}`,
+            //             type: 'GET',
+            //             success: function(response) {
+            //                 let eventData = response.event;
+            //                 console.log(eventData);
+            //                 $('.name').val(eventData.name);
+            //                 $('.location').val(eventData.location);
+            //                 $('.description').val(eventData.description);
+            //                 $('.start-date').val(eventData.start_dt);
+            //                 $('.event-date').val(eventData.end_dt);
+            //                 $('.guests').val(response.guests);
+            //                 $('.edit-event').attr('href', `/admin/events/${eventId}/edit`)
+            //                 $("#viewEventModal").modal('show');
+            //             }
+            //         });
+            //     });
+            // },
             "columns": [
                 { "data": "name" },
                 { "data": "date" },
@@ -173,6 +173,53 @@
                 'orderable': false,
                 'className': 'actions',
             }]
+        });
+
+        $('#list tbody').on( 'click', '.eventDelete', function () {
+            let event_id = $(this).attr('data-id');
+
+            swal({
+              title: "Are you sure to delete this event?",
+              icon: "warning",
+              buttons: ['Cancel', 'Yes, Proceed'],
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: `/admin/events/${event_id}`,
+                        type: 'DELETE',
+                        success: function() {
+                            swal({
+                              title: "Deleted Successfully",
+                              icon: "success",
+                            }).then(() => {
+                                location.reload();
+                            })
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#list tbody').on( 'click', '.eventView', function (e) {
+            e.preventDefault();
+            let eventId = $(this).attr('data-id');
+
+            $.ajax({
+                url: `/event/details/${eventId}`,
+                type: 'GET',
+                success: function(response) {
+                    let eventData = response.event;
+                    console.log(eventData);
+                    $('.name').val(eventData.name);
+                    $('.location').val(eventData.location);
+                    $('.description').val(eventData.description);
+                    $('.start-date').val(eventData.start_dt);
+                    $('.event-date').val(eventData.end_dt);
+                    $('.guests').val(response.guests);
+                    $('.edit-event').attr('href', `/admin/events/${eventId}/edit`)
+                    $("#viewEventModal").modal('show');
+                }
+            });
         });
     </script>
 @endsection
