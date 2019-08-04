@@ -31,7 +31,7 @@ class EventInvitation extends Mailable
      */
     public function build()
     {
-        return $this->from('repuestobrian@gmail.com')
+        return $this->from('admin@gmail.com')
                     ->view('mails.eventinvitation')
                     ->with([
                         'guest_id' => $this->guest_id,

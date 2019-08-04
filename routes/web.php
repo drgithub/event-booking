@@ -23,6 +23,7 @@ Route::namespace('Admin')->prefix('admin')->group(function () {
 });
 
 Route::group(['prefix' => 'event', 'namespace' => 'Admin'], function() {
-	Route::get('/guest/{id}', 'EventController@show');
+    Route::get('/guest/{id}', 'EventController@show');
+    Route::get('/details/{id}', 'EventController@getEventDetails');
 	Route::post('/acceptInvitation', 'EventController@acceptInvitation');
 });

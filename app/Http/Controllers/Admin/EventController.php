@@ -139,4 +139,24 @@ class EventController extends Controller
             'status'  => $guest
         ]); 
     }
+
+    public function getEventDetails($id)
+    {
+
+        $guests = "";
+        $event = Event::find($id);
+
+        foreach ($event->guests as $key => $guest) {
+            if ($key == 0) {
+                $guests .= $guest->email;
+            } else {
+                $guests .= ',' . $guest->email;
+            }
+        }
+
+        return response()->json([
+            'event' => $event,
+            'guests' => $guests,
+        ]);
+    }
 }

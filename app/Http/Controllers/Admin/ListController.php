@@ -16,7 +16,7 @@ class ListController extends Controller
 
         if ($table === "events") {
             $paginate = DB::table($table)
-                ->select('id', 'name', 'location', 'start_dt', 'deleted_at')
+                ->select('id', 'name', 'location', 'start_dt', 'description', 'deleted_at')
                 ->where(function($query) use($request){
                     $query->where('name', 'like', '%' . $request->search['value'] . '%')
                           ->orWhere('location', 'like', '%' . $request->search['value'] . '%');
@@ -26,17 +26,19 @@ class ListController extends Controller
                 
                 
             $results = collect($paginate->items())->map(function ($item, $key) {
+                $event = $this->getEvent($item->id);
+
                 return array(
                     'DT_RowId' => $item->id,
-                    'name' => '<a href="#" class="eventView" data-action="view" data-id="'.$item->id.'">'.$item->name.'</a>',
+                    'name' => '<a href="" class="eventView"  data-action="view" data-id="'.$item->id.'">'.$item->name.'</a>',
                     'date' => Carbon::parse($item->start_dt)->format('l, F d, Y h:iA'),
                     'location' => $item->location,
-                    'guests' => $this->getEvent($item->id)->guests->count(),
-                    'going' =>  $this->getEvent($item->id)->guests()->whereStatus(1)->count(),
-                    'actions' => '<a href="'.route('events.edit', ['event' => $item->id]).'" class="btn btn-success eventEdit">' .
+                    'guests' => $event->guests->count(),
+                    'going' =>  $event->guests()->whereStatus(1)->count(),
+                    'actions' => '<a href="'.route('events.edit', ['event' => $item->id]).'" class="btn btn-success eventEdit" style="width: 100px">' .
                         '   <i class="fa fa-edit"></i> Edit' .
                         '</a>' .
-                        '<button class="btn btn-danger eventDelete" type="button" data-action="delete" data-id="'.$item->id.'">' .
+                        '<button class="btn btn-danger eventDelete ml-2" type="button" data-action="delete" data-id="'.$item->id.'" style="width: 100px">' .
                         '   <i class="fa fa-trash-o"></i> Delete' .
                         '</button>'
                 );

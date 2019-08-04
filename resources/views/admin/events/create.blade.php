@@ -3,7 +3,7 @@
 @section('title2', 'Create Event')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('events.index') }}">Events</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('events.create') }}">Create Form</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('events.create') }}">Create Event</a></li>
 @endsection
 @section('content')
     <div class="row">

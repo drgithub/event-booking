@@ -13,8 +13,8 @@
                 <div class="card card-accent-primary">
                     <input type="hidden" name="event_id" value="{{ $event->id }}">
                     <div class="card-header actions">
-                        <button id="eventSave" class="btn btn-primary" type="submit">Save</button>
-                        <button id="eventClear" class="btn btn-secondary" type="button">Clear</button>
+                        <button id="eventSave" class="btn btn-primary" type="submit">Update</button>
+                        <button id="eventCancel" class="btn btn-secondary" type="button">Cancel</button>
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
@@ -162,10 +162,8 @@
             }
         });
 
-        $('#eventClear').click(function() {
-            form.resetForm();
-            $('#eventForm')[0].reset();
-            $("#guest").tagsinput('removeAll');
+        $('#eventCancel').click(function() {
+            location.href = "/admin/events";
         });
     </script>
 @endsection

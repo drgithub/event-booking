@@ -53,7 +53,7 @@
     </button>
     <ul class="nav navbar-nav ml-auto">
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link d-none d-md-block" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
           <img class="img-avatar"  src="{{ asset('img/default2.png') }}" alt="admin@bootstrapmaster.com"> Admin&nbsp;&nbsp;&nbsp;&nbsp;
         </a>
         <div class="dropdown-menu dropdown-menu-right">
@@ -81,7 +81,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{ route('events.index') }}">
-                <i class="nav-icon icon-speedometer"></i> Event
+                <i class="nav-icon icon-calendar"></i> Event
               </a>
             </li>
             <li class="divider"></li>
