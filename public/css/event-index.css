@@ -2,3 +2,10 @@
     width: 84px;
     margin-right: 6px;
 }
+
+.swal-button--confirm,
+.swal-button--cancel {
+    width: 134px;
+    border: 2px solid white !important;
+    outline: none;
+}

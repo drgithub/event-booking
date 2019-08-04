@@ -4,16 +4,6 @@
 @section('breadcrumb')
     <li class="breadcrumb-item active"><a href="{{ route('events.index') }}">Events</a></li>
 @endsection
-@section('custom')
-    <style>
-        .swal-button--confirm, .swal-button--cancel {
-            width: 134px;
-            border: 2px solid white !important;
-            outline: none;
-        }
-
-    </style>
-@endsection
 @section('content')
     <div class="modal fade" id="viewEventModal" tabindex="-1" role="dialog" aria-labelledby="viewEventModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -63,7 +53,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a href="#" class="btn btn-success edit-event" style="width: 60px">Edit</a> 
+            <a href="#" class="btn btn-success edit-event" style="width: 60px">Edit</a>
             <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 60px">Close</button>
         </div>
         </div>
@@ -76,7 +66,7 @@
             </a>
         </div>
         <div class="card-body">
-            <table id="list" class="display nowrap table table-striped table-bordered w-100">
+            <table id="list" class="display nowrap table table-striped table-bordered" style="width: 100%">
                 <thead>
                     <tr>
                         <th>Event Name</th>

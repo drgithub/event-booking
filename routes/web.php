@@ -16,14 +16,14 @@
 // Route::get('register', 'Register')->name('register');
 
 Route::namespace('Admin')->prefix('admin')->group(function () {
-    Route::get('/', 'DashboardController@index')->name('root');
-    Route::get('/list/{table}', 'ListController@index')->name('list');
+  Route::get('/', 'DashboardController@index')->name('root');
+  Route::get('/list/{table}', 'ListController@index')->name('list');
 
-    Route::resource('/events', 'EventController');
+  Route::resource('/events', 'EventController');
 });
 
 Route::group(['prefix' => 'event', 'namespace' => 'Admin'], function() {
-    Route::get('/guest/{id}', 'EventController@show');
-    Route::get('/details/{id}', 'EventController@getEventDetails');
-	Route::post('/acceptInvitation', 'EventController@acceptInvitation');
+  Route::get('/guest/{id}', 'EventController@show');
+  Route::get('/details/{id}', 'EventController@getEventDetails');
+  Route::post('/acceptInvitation', 'EventController@acceptInvitation');
 });
