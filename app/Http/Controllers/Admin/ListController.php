@@ -35,10 +35,10 @@ class ListController extends Controller
                     'location' => $item->location,
                     'guests' => $event->guests->count(),
                     'going' =>  $event->guests()->whereStatus(1)->count(),
-                    'actions' => '<a href="'.route('events.edit', ['event' => $item->id]).'" class="btn btn-success eventEdit" style="width: 100px">' .
+                    'actions' => '<a href="'.route('events.edit', ['event' => $item->id]).'" class="btn btn-success eventEdit" style="width: 88px">' .
                         '   <i class="fa fa-edit"></i> Edit' .
                         '</a>' .
-                        '<button class="btn btn-danger eventDelete ml-2" type="button" data-action="delete" data-id="'.$item->id.'" style="width: 100px">' .
+                        '<button class="btn btn-danger eventDelete ml-2" type="button" data-action="delete" data-id="'.$item->id.'" style="width: 88px">' .
                         '   <i class="fa fa-trash-o"></i> Delete' .
                         '</button>'
                 );

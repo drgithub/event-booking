@@ -96,7 +96,7 @@
           <li class="breadcrumb-item">Admin</li>
 				  @yield('breadcrumb')
         </ol>
-        <div class="container-fluid">
+        <div class="container-fluid px-lg-4 px-sm-3">
           <div class="animated fadeIn">
             <h1 class="mb-5 mt-4">@yield('title2')</h1>
             @yield('content')

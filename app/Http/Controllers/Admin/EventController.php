@@ -145,6 +145,8 @@ class EventController extends Controller
 
         $guests = "";
         $event = Event::find($id);
+        $eventStart = renderDate($event->start_dt, 'l, F d, Y h:i A');
+        $eventEnd = renderDate($event->end_dt, 'l, F d, Y h:i A');
 
         foreach ($event->guests as $key => $guest) {
             if ($key == 0) {
@@ -157,6 +159,10 @@ class EventController extends Controller
         return response()->json([
             'event' => $event,
             'guests' => $guests,
+            'convertedDates' => [
+                'start' => $eventStart,
+                'end' => $eventEnd,
+            ]
         ]);
     }
 }

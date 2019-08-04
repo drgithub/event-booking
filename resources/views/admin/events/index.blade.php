@@ -2,15 +2,17 @@
 @section('title', 'Event Booking - Events')
 @section('title2', 'Events')
 @section('breadcrumb')
+    <li class="breadcrumb-item active"><a href="{{ route('events.index') }}">Events</a></li>
+@endsection
+@section('custom')
     <style>
-        .swal-button--confirm, .swal-button--cancel{
-            width: 200px;
+        .swal-button--confirm, .swal-button--cancel {
+            width: 134px;
             border: 2px solid white !important;
             outline: none;
         }
 
     </style>
-    <li class="breadcrumb-item active"><a href="{{ route('events.index') }}">Events</a></li>
 @endsection
 @section('content')
     <div class="modal fade" id="viewEventModal" tabindex="-1" role="dialog" aria-labelledby="viewEventModalLabel" aria-hidden="true">
@@ -61,8 +63,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <a href="#" class="btn btn-success edit-event">Edit</a>
+            <a href="#" class="btn btn-success edit-event" style="width: 60px">Edit</a> 
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 60px">Close</button>
         </div>
         </div>
     </div>
@@ -174,8 +176,8 @@
                     $('.name').val(eventData.name);
                     $('.location').val(eventData.location);
                     $('.description').val(eventData.description);
-                    $('.start-date').val(eventData.start_dt);
-                    $('.event-date').val(eventData.end_dt);
+                    $('.start-date').val(response.convertedDates.start);
+                    $('.event-date').val(response.convertedDates.end);
                     $('.guests').val(response.guests);
                     $('.edit-event').attr('href', `/admin/events/${eventId}/edit`)
                     $("#viewEventModal").modal('show');
