@@ -23,7 +23,7 @@ class EventController extends Controller
 
         return view('admin.events.show', compact('guest'));
     }
-    
+
     public function create()
     {
         return View::make('admin::events.create');
@@ -49,7 +49,7 @@ class EventController extends Controller
             foreach ($event->guests as $guest) {
                 Mail::to($guest)->send(new EventInvitation($event, $guest->id));
             }
-            
+
             $status = 1;
             $message = "The event has been successfully added.";
         } else {
@@ -127,7 +127,7 @@ class EventController extends Controller
                 ->get()
                 ->first()
                 ->update(['status' => 1]);
-        
+
         if ($guest) {
             $message = 'Accepted the Invitation';
         } else {
@@ -137,7 +137,7 @@ class EventController extends Controller
         return response()->json([
             'message' => $message,
             'status'  => $guest
-        ]); 
+        ]);
     }
 
     public function getEventDetails($id)

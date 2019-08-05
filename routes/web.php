@@ -15,6 +15,8 @@
 // Route::get('login', 'Login')->name('login');
 // Route::get('register', 'Register')->name('register');
 
+Route::get('/invitation-form', 'EventController@invitationForm')->name('event-invitation');
+
 Route::namespace('Admin')->prefix('admin')->group(function () {
   Route::get('/', 'DashboardController@index')->name('root');
   Route::get('/list/{table}', 'ListController@index')->name('list');
