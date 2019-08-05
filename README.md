@@ -21,9 +21,9 @@ Steps:
 
 4. in your `.env` replace your mailer config to
 
-`MAIL_DRIVER=smtp
-MAIL_HOST=smtp.googlemail.com
-MAIL_PORT=465
-MAIL_USERNAME=your_gmail_username
-MAIL_PASSWORD=your_gmail_password
-MAIL_ENCRYPTION=ssl`
+`MAIL_DRIVER=smtp`  
+`MAIL_HOST=smtp.googlemail.com`  
+`MAIL_PORT=465`  
+`MAIL_USERNAME=eventbookingrd22@gmail.com`  
+`MAIL_PASSWORD=Admin123!`  
+`MAIL_ENCRYPTION=ssl`  

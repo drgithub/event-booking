@@ -6,7 +6,7 @@
 <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="invitationModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header border-0">
         <input type="hidden" id="event_data" event-id="{{ $guest->event->id }}" guest-id="{{ $guest->id }}">
         <h5 class="modal-title font-bold" id="invitationModalLabel">{{ $guest->event->name }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -27,9 +27,9 @@
             <div>End : {{ $guest->event->end_dt }}</div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary decline" data-dismiss="modal">Decline</button>
-        <button type="button" class="btn btn-primary accept">Go</button>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-success accept" style="width: 88px">Go</button>
+        <button type="button" class="btn btn-secondary decline" data-dismiss="modal" style="width: 88px">Decline</button>
       </div>
     </div>
   </div>
