@@ -38,7 +38,7 @@ class ListController extends Controller
                     'actions' => '<a href="'.route('events.edit', ['event' => $item->id]).'" class="btn btn-success eventEdit" style="width: 88px">' .
                         '   <i class="fa fa-edit"></i> Edit' .
                         '</a>' .
-                        '<button class="btn btn-danger eventDelete ml-2" type="button" data-action="delete" data-id="'.$item->id.'" style="width: 88px">' .
+                        '<button class="btn btn-danger eventDelete ml-2" type="button" data-id="'.$item->id.'" style="width: 88px">' .
                         '   <i class="fa fa-trash-o"></i> Delete' .
                         '</button>'
                 );

@@ -11,19 +11,28 @@
 |
 */
 
-// Route::get('/', 'Home')->name('home');
-// Route::get('login', 'Login')->name('login');
-// Route::get('register', 'Register')->name('register');
-
-Route::get('/invitation-form', 'EventController@invitationForm')->name('event-invitation');
+Route::get('/', 'PublicController@home')->name('home');
+// Route::get('/login', 'Login')->name('login');
+// Route::get('/register', 'Register')->name('register');
+Route::get('/invitation-form', 'EventController@invitationForm')->name('event.invitation');
 Route::get('/invitation-details', 'EventController@getInvitationDetails');
 Route::post('/invitation-response', 'EventController@respondToEvent');
 
 Route::namespace('Admin')->prefix('admin')->group(function () {
   Route::get('/', 'DashboardController@index')->name('root');
+  Route::get('/create', 'IndexController@create')->name('admin.create');
+  Route::get('/edit', 'IndexController@edit')->name('admin.edit');
+  Route::get('/profile', 'IndexController@profile')->name('admin.profile');
+  Route::get('/users', 'IndexController@list')->name('users.list');
   Route::get('/list/{table}', 'ListController@index')->name('list');
 
   Route::resource('/events', 'EventController');
+});
+
+Route::namespace('Account')->prefix('account')->group(function () {
+  Route::get('/', 'DashboardController@index')->name('account.root');
+  Route::get('/profile', 'IndexController@profile')->name('account.profile');
+  Route::get('/edit', 'IndexController@edit')->name('account.edit');
 });
 
 Route::group(['prefix' => 'event', 'namespace' => 'Admin'], function() {

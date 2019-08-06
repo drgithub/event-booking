@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Event;
 use App\Guest;
-use Illuminate\Http\Request;
 use App\Mail\EventInvitation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Admin\BaseController as Controller;
