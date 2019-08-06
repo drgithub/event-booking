@@ -36,20 +36,21 @@
       <div class="row justify-content-center">
         <div class="col-md-8">
           <div class="card card-accent-primary">
+            <input class="details" type="hidden" email="{{ $guest->email }}" event-id="{{ $guest->event->id }}">
             <div class="card-header">You have been invited to the following event.</div>
             <div class="card-body">
-              <h4 class="event-title">-----</h4>
-                <span class="description">-----</span>
+              <h4>{{ $guest->event->name }}</h4>
+                <span>{{ $guest->event->description }}</span>
               <br />
               <br />
               <table>
                 <tr>
                   <td style="color: #888">When</td>
-                  <td class="schedule" style="padding-left: 20px">-----</td>
+                  <td style="padding-left: 20px">{{ renderDate($guest->event->start_dt, 'l, F d, Y h:i A') . '' . renderDate($guest->event->end_dt, 'l, F d, Y h:i A')}}</td>
                 </tr>
                 <tr>
                   <td style="color: #888">Where</td>
-                  <td class="location" style="padding-left: 20px">-----</td>
+                  <td style="padding-left: 20px">{{ $guest->event->location }}</td>
                 </tr>
                 <tr>
                   <td style="color: #888">Who</td>
@@ -57,14 +58,14 @@
                 </tr>
                 <tr>
                   <td style="color: #888">Going?</td>
-                  <td class="going" style="padding-left: 20px"></td>
+                  <td class="going" style="padding-left: 20px">{{ $guest->status == 1 ? 'Yes' : ($guest->status == 2 ? 'Maybe' : ($guest->status == 3 ? 'No' : ''))}}</td>
                 </tr>
               </table>
               <br/>
               <div class="response-buttons">
-                <button class="event-response btn btn-secondary" response="1" style="width: 80px">Yes</button>
-                <button class="event-response btn btn-secondary" response="2" style="width: 80px">Maybe</button>
-                <button class="event-response btn btn-secondary" response="3" style="width: 80px">No</button>
+                <button class="event-response btn {{ $guest->status == 1 ? 'btn-success' : 'btn-outline-secondary' }}" response="1" style="width: 80px">Yes</button>
+                <button class="event-response btn {{ $guest->status == 2 ? 'btn-secondary' : 'btn-outline-secondary' }}" response="2" style="width: 80px">Maybe</button>
+                <button class="event-response btn {{ $guest->status == 3 ? 'btn-danger' : 'btn-outline-secondary' }}" response="3" style="width: 80px">No</button>
               </div>
             </div>
           </div>
@@ -81,42 +82,21 @@
     <script src="{{ asset('js/coreui.min.js') . '?r=' . rand() }}"></script>
     <script>
       let currentURL = window.location.href;
-      let url = new URL(currentURL);
-      let fkey = url.searchParams.get("fkey");
-      let decriptedFkey = atob(fkey);
-      let email = decriptedFkey.slice(0, 0) + decriptedFkey.slice(1);
+      let event_id = $('.details').attr('event-id');
+      let email = $('.details').attr('email');
       let formToken = $('meta[name=csrf-token]').attr('content');
-
-      $.ajax({
-        url: '/invitation-details',
-        type: 'GET',
-        data: {
-          _token: formToken,
-          event_id: decriptedFkey[0],
-          guest_email: email,
-        },
-        success: function(response) {
-          let event = response.event;
-          $('.event-title').html(event.name);
-          $('.description').html(event.description);
-          $('.location').html(event.location);
-          $('.schedule').html(`${response.start} - ${response.end}`);
-          $('.going').html(response.guest_response == 1 ? 'Yes' : (response.guest_response == 2 ? 'Maybe' : (response.guest_response == 3 ? 'No' : '')));
-
-          $('.event-response').each(function(key, value) {
-            if ((key + 1) == response.guest_response) {
-              
-              $(this).addClass('btn-success');
-            }
-          });
-        }
-      });
 
       $('.response-buttons').on('click', '.event-response', function() {
         let triggerElement = $(this);
         let revoke = false;
+        let option = triggerElement.attr('response');
+        let activeButtons = [
+          'btn-success',
+          'btn-secondary',
+          'btn-danger',
+        ];
 
-        if (triggerElement.hasClass('btn-success')) {
+        if (triggerElement.hasClass('btn-success') || triggerElement.hasClass('btn-danger') || triggerElement.hasClass('btn-secondary')) {
           revoke = true;
         }
 
@@ -125,20 +105,24 @@
           method: 'POST',
           data: {
             _token: formToken,
-            event_id: decriptedFkey[0],
+            event_id: event_id,
             guest_email: email,
             event_response: revoke ? 0 : $(this).attr('response'),
           },
           success: async function() {
             await $('.event-response').each(function() {
-              $(this).removeClass('btn-success');
+              $(this).removeClass('btn-success btn-danger btn-secondary');
+
+              if (!$(this).hasClass('btn-outline-secondary')) {
+                $(this).addClass('btn-outline-secondary');
+              }
             });
 
             if (revoke) {
               $('.going').html('');
             } else {
               $('.going').html(triggerElement.html());
-              triggerElement.addClass('btn-success');
+              triggerElement.addClass(activeButtons[option - 1]).removeClass('btn-outline-secondary');
             }
           }
         })

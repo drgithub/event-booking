@@ -6,49 +6,34 @@ use App\Event;
 use App\Guest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Input;
 
 class EventController extends Controller
 {
     public function invitationForm(Request $request)
     {
-        return View::make('eventInvitationForm');
-    }
+        $fkey = base64_decode(Input::get('fkey'));
+        $event_id = $fkey[0];
+        $email = substr_replace($fkey, '', 0, 1);
+        $guest = Guest::whereEventId($event_id)
+                        ->whereEmail($email)
+                        ->get()
+                        ->first();
 
-    public function getInvitationDetails()
-    {
-        $event = Event::find(request()->event_id);
-        $guest = $this->getGuest(request()->all());
-
-        if (empty($event) || empty($guest)) {
-            return response()->json([
-                'status' => false
-            ]);
-        } else {
-            return response()->json([
-                'status'         => true,
-                'event'          => $event,
-                'start'          => renderDate($event->start_dt, 'l, F d, Y h:i A'),
-                'end'            => renderDate($event->end_dt, 'l, F d, Y h:i A'),
-                'guest_response' => $guest->status,
-            ]);
-        }
+        return View::make('eventInvitationForm', compact('guest'));
     }
 
     public function respondToEvent()
     {
-        $update = $this->getGuest(request()->all())
-                       ->update(['status' => request()->event_response]);
+       $guest = Guest::whereEventId(request()->event_id)
+                      ->whereEmail(request()->guest_email)
+                      ->get()
+                      ->first();
 
+        $update = $guest->update(['status' => request()->event_response]);
 
         return response()->json([
             'status' => $update,
         ]);
-    }
-
-    public function getGuest($data) {
-        return Guest::whereEventId($data['event_id'])
-                        ->whereEmail($data['guest_email'])
-                        ->get()
-                        ->first();
     }
 }
