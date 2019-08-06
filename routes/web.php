@@ -16,6 +16,8 @@
 // Route::get('register', 'Register')->name('register');
 
 Route::get('/invitation-form', 'EventController@invitationForm')->name('event-invitation');
+Route::get('/invitation-details', 'EventController@getInvitationDetails');
+Route::post('/invitation-response', 'EventController@respondToEvent');
 
 Route::namespace('Admin')->prefix('admin')->group(function () {
   Route::get('/', 'DashboardController@index')->name('root');

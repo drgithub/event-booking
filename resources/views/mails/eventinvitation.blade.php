@@ -5,6 +5,6 @@ Hello!
 	<br>
 	<p>Click the Link below to check the details and respond!</p>
 	<br>
-	<p> {{ url('/') . '/event/guest' . '/' . $guest_id }}</p>
+	<p> {{ url('/') . '/invitation-form?fkey=' . $guest_key }}</p>
 </div>
  

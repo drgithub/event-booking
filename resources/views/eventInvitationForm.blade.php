@@ -4,6 +4,7 @@
     <base href="./">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ csrf_token()  }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Invitation Form</title>
     <!-- Icons-->
@@ -37,30 +38,34 @@
           <div class="card card-accent-primary">
             <div class="card-header">You have been invited to the following event.</div>
             <div class="card-body">
-              <h4>[Title here]</h4>
-              [Description here]Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+              <h4 class="event-title">-----</h4>
+                <span class="description">-----</span>
               <br />
               <br />
               <table>
                 <tr>
                   <td style="color: #888">When</td>
-                  <td style="padding-left: 20px">Sat Aug 10 9am – Sun Aug 11, 2019 6pm</td>
+                  <td class="schedule" style="padding-left: 20px">-----</td>
                 </tr>
                 <tr>
                   <td style="color: #888">Where</td>
-                  <td style="padding-left: 20px">Cebu IT Park, Cebu City, Cebu, Philippines</td>
+                  <td class="location" style="padding-left: 20px">-----</td>
                 </tr>
                 <tr>
                   <td style="color: #888">Who</td>
                   <td style="padding-left: 20px">eventbookingrd22@gmail.com</td>
-                </tr
+                </tr>
                 <tr>
                   <td style="color: #888">Going?</td>
-                  <td style="padding-left: 20px">eventbookingrd22@gmail.com</td>
+                  <td class="going" style="padding-left: 20px"></td>
                 </tr>
               </table>
               <br/>
-              [Buttons here]
+              <div class="response-buttons">
+                <button class="event-response btn btn-secondary" response="1" style="width: 80px">Yes</button>
+                <button class="event-response btn btn-secondary" response="2" style="width: 80px">Maybe</button>
+                <button class="event-response btn btn-secondary" response="3" style="width: 80px">No</button>
+              </div>
             </div>
           </div>
         </div>
@@ -74,5 +79,70 @@
     <script src="{{ asset('js/pace.min.js') . '?r=' . rand() }}"></script>
     <script src="{{ asset('perfect-scrollbar/dist/perfect-scrollbar.min.js') . '?r=' . rand() }}"></script>
     <script src="{{ asset('js/coreui.min.js') . '?r=' . rand() }}"></script>
+    <script>
+      let currentURL = window.location.href;
+      let url = new URL(currentURL);
+      let fkey = url.searchParams.get("fkey");
+      let decriptedFkey = atob(fkey);
+      let email = decriptedFkey.slice(0, 0) + decriptedFkey.slice(1);
+      let formToken = $('meta[name=csrf-token]').attr('content');
+
+      $.ajax({
+        url: '/invitation-details',
+        type: 'GET',
+        data: {
+          _token: formToken,
+          event_id: decriptedFkey[0],
+          guest_email: email,
+        },
+        success: function(response) {
+          let event = response.event;
+          $('.event-title').html(event.name);
+          $('.description').html(event.description);
+          $('.location').html(event.location);
+          $('.schedule').html(`${response.start} - ${response.end}`);
+          $('.going').html(response.guest_response == 1 ? 'Yes' : (response.guest_response == 2 ? 'Maybe' : (response.guest_response == 3 ? 'No' : '')));
+
+          $('.event-response').each(function(key, value) {
+            if ((key + 1) == response.guest_response) {
+              
+              $(this).addClass('btn-success');
+            }
+          });
+        }
+      });
+
+      $('.response-buttons').on('click', '.event-response', function() {
+        let triggerElement = $(this);
+        let revoke = false;
+
+        if (triggerElement.hasClass('btn-success')) {
+          revoke = true;
+        }
+
+        $.ajax({
+          url: '/invitation-response',
+          method: 'POST',
+          data: {
+            _token: formToken,
+            event_id: decriptedFkey[0],
+            guest_email: email,
+            event_response: revoke ? 0 : $(this).attr('response'),
+          },
+          success: async function() {
+            await $('.event-response').each(function() {
+              $(this).removeClass('btn-success');
+            });
+
+            if (revoke) {
+              $('.going').html('');
+            } else {
+              $('.going').html(triggerElement.html());
+              triggerElement.addClass('btn-success');
+            }
+          }
+        })
+      });
+    </script>
   </body>
 </html>

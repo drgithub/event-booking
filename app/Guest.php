@@ -9,6 +9,7 @@ class Guest extends Model
     protected $fillable = [
         "email",
         "event_id",
+        "fkey",
         "status"
     ];
 

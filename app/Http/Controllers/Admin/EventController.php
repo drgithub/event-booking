@@ -17,13 +17,6 @@ class EventController extends Controller
         return View::make('admin::events.index');
     }
 
-    public function show($id)
-    {
-        $guest = Guest::find($id);
-
-        return view('admin.events.show', compact('guest'));
-    }
-
     public function create()
     {
         return View::make('admin::events.create');
@@ -40,14 +33,16 @@ class EventController extends Controller
         $newGuestList = array();
 
         foreach ($guestList as $guest) {
+            $fkey = base64_encode($event->id . $guest);
+
             if (filter_var($guest, FILTER_VALIDATE_EMAIL)) {
-                array_push($newGuestList, new \App\Guest(['email' => $guest]));
+                array_push($newGuestList, new \App\Guest(['email' => $guest, 'fkey' => $fkey]));
             }
         }
 
         if ($event->guests()->saveMany($newGuestList)) {
             foreach ($event->guests as $guest) {
-                Mail::to($guest)->send(new EventInvitation($event, $guest->id));
+                Mail::to($guest)->send(new EventInvitation($event, $guest->fkey));
             }
 
             $status = 1;
