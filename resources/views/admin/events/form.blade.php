@@ -115,26 +115,3 @@
         <button onclick="clearData()" class="btn btn-light">Clear</button>
     </div>
 </div>
-{{-- <script>
-    alert();
-    $('.eventFormCloseButton').click(function (e) {
-        e.preventDefault();
-    });
-
-    $('.date-picker').datetimepicker({
-        useCurrent: false,
-        showTodayButton: true,
-        showClear: true,
-        format: 'YYYY-MM-DD HH:mm:ss',
-        icons: {
-            time: "fa fa-clock-o",
-            date: "fa fa-calendar",
-            up: "fa fa-arrow-up",
-            down: "fa fa-arrow-down",
-            previous: "fa fa-angle-left",
-            next: "fa fa-angle-right",
-            today: "fa fa-thumb-tack",
-            clear: "fa fa-trash"
-        }
-    });
-</script> --}}

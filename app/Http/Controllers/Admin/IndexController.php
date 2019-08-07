@@ -15,11 +15,11 @@ class IndexController extends Controller
 
     public function profile()
     {
-
+        return View::make('admin::profile');
     }
 
     public function edit()
     {
-
+        return View::make('admin::profileEdit');
     }
 }

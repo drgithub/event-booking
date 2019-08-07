@@ -2,38 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Event;
 use App\Guest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Input;
 
 class EventController extends Controller
 {
     public function invitationForm(Request $request)
     {
-        $fkey = base64_decode(Input::get('fkey'));
-        $event_id = $fkey[0];
-        $email = substr_replace($fkey, '', 0, 1);
-        $guest = Guest::whereEventId($event_id)
-                        ->whereEmail($email)
-                        ->get()
-                        ->first();
+        if ($request->has('fkey') && $request->input('fkey')) {
+            $data = Guest::where('fkey', $request->input('fkey'))
+                ->with('event')
+                ->first();
+            
+            if (!$data) return null;
 
-        return View::make('eventInvitationForm', compact('guest'));
+            return View::make('eventInvitationForm', compact('data'));
+        }        
     }
 
-    public function respondToEvent()
+    public function respondToEvent(Request $request)
     {
-       $guest = Guest::whereEventId(request()->event_id)
-                      ->whereEmail(request()->guest_email)
-                      ->get()
-                      ->first();
+        $result = Guest::where('fkey', $request->input('fkey'))
+            ->update(['status' => $request->input('response')]);
 
-        $update = $guest->update(['status' => request()->event_response]);
-
-        return response()->json([
-            'status' => $update,
-        ]);
+        if ($result) {
+            return response()->json([
+                'status' => $result,
+            ]);
+        }
     }
 }
