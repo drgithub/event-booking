@@ -14,8 +14,9 @@
 Route::get('/', 'PublicController@home')->name('home');
 // Route::get('/login', 'Login')->name('login');
 // Route::get('/register', 'Register')->name('register');
-Route::get('/invitation-form', 'EventController@invitationForm')->name('event.invitation');
-Route::post('/invitation-response', 'EventController@respondToEvent')->name('event.response');
+Route::get('/invitation-form', 'PrivateController@invitationForm')->name('event.invitation');
+Route::post('/invitation-response', 'PrivateController@respondToEvent')->name('event.response');
+Route::get('/event', 'PrivateController@view')->name('event.private.view');
 
 Route::namespace('Admin')->prefix('admin')->group(function () {
   Route::get('/', 'DashboardController@index')->name('root');

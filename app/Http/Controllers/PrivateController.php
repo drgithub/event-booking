@@ -6,7 +6,7 @@ use App\Guest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
-class EventController extends Controller
+class PrivateController extends Controller
 {
     public function invitationForm(Request $request)
     {
@@ -31,5 +31,9 @@ class EventController extends Controller
                 'status' => $result,
             ]);
         }
+    }
+
+    public function view() {
+        return View::make('private.eventView');
     }
 }
