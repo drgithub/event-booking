@@ -115,31 +115,10 @@ class EventController extends Controller
         $event->delete();
     }
 
-    public function acceptInvitation()
-    {
-        $guest = Guest::whereEventId(request()->event_id)
-                ->whereId(request()->guest_id)
-                ->get()
-                ->first()
-                ->update(['status' => 1]);
-
-        if ($guest) {
-            $message = 'Accepted the Invitation';
-        } else {
-            $message = 'Something Went Wrong, Please try again';
-        }
-
-        return response()->json([
-            'message' => $message,
-            'status'  => $guest
-        ]);
-    }
-
-    public function getEventDetails($id)
+    public function show(Event $event)
     {
 
         $guests = "";
-        $event = Event::find($id);
         $eventStart = renderDate($event->start_dt, 'l, F d, Y h:i A');
         $eventEnd = renderDate($event->end_dt, 'l, F d, Y h:i A');
 

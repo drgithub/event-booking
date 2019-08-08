@@ -2,7 +2,7 @@
 @section('title', 'Event Booking - Create Event')
 @section('title2', 'Create Event')
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('events.index') }}">Events</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('events.index') }}">Event</a></li>
     <li class="breadcrumb-item"><a href="{{ route('events.create') }}">Create Event</a></li>
 @endsection
 @section('content')

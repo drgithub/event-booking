@@ -9,7 +9,7 @@
         <div class="col-md-12">
             <div class="card card-accent-primary" style="max-width:600px">
                 <div class="card-header actions">
-                    <button id="eventSave" class="btn btn-success" type="submit">Edit</button>
+                    <a href="{{ route('admin.edit') }}" class="btn btn-success" style="width: 84px">Edit</a>
                 </div>
                 <div class="card-body">
                     <div class="form-group row">

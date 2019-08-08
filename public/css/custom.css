@@ -51,3 +51,7 @@
     align-items: center;
     justify-content: center;
 }
+
+.actions button {
+    width: 84px;
+}

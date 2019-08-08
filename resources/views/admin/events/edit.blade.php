@@ -2,7 +2,7 @@
 @section('title', 'Event Booking - Edit Event')
 @section('title2', 'Edit Event')
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('events.index') }}">Events</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('events.index') }}">Event</a></li>
     <li class="breadcrumb-item"><a href="{{ route('events.edit', ['event' => 1]) }}">Edit Event</a></li>
 @endsection
 @section('content')
@@ -72,9 +72,6 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('datetime-picker/css/bootstrap-datetimepicker.min.css') . '?r=' . rand()  }}" />
     <link rel="stylesheet" href="{{ asset('bootstrap4-tagsinput/tagsinput.css') . '?r=' . rand()  }}" />
-@endsection
-@section('custom')
-    <link rel="stylesheet" href="{{ asset('css/event-create.css') . '?r=' . rand()  }}" />
 @endsection
 @section('scritps')
     <script src="{{ asset('datetime-picker/js/bootstrap-datetimepicker.min.js') . '?r=' . rand() }}"></script>
