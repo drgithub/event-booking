@@ -18,3 +18,12 @@ Steps:
     b. `composer i`
     c. `php artisan migrate`
     d. `npm run dev`
+
+4. in your `.env` replace your mailer config to
+
+`MAIL_DRIVER=smtp`  
+`MAIL_HOST=smtp.googlemail.com`  
+`MAIL_PORT=465`  
+`MAIL_USERNAME=eventbookingrd22@gmail.com`  
+`MAIL_PASSWORD=Admin123!`  
+`MAIL_ENCRYPTION=ssl`  

@@ -3,89 +3,140 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Event;
+use App\Guest;
+use App\Mail\EventInvitation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Admin\BaseController as Controller;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $events = Event::all();
-
-        return View::make('admin::events.index', compact('events'));
+        return View::make('admin::events.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return View::make('admin::events.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $post = Event::create($request->all());
-        return response()->json($post);
+        $message = "";
+        $status = 0;
+
+        $guestList = explode(',', $request->guests_email);
+        $event = Event::create($request->except('guests_email'));
+
+        $newGuestList = array();
+
+        foreach ($guestList as $guest) {
+            $fkey = base64_encode($event->id . $guest);
+
+            if (filter_var($guest, FILTER_VALIDATE_EMAIL)) {
+                array_push($newGuestList, new \App\Guest(['email' => $guest, 'fkey' => $fkey]));
+            }
+        }
+
+        if ($event->guests()->saveMany($newGuestList)) {
+            foreach ($event->guests as $guest) {
+                Mail::to($guest)->send(new EventInvitation($event, $guest->fkey));
+            }
+
+            $status = 1;
+            $message = "The event has been successfully added.";
+        } else {
+            $message = "Sorry, something went wrong. We are working on it and we'll get it fixed as soon as we can.";
+        }
+
+        return response()->json([
+            "status" => $status,
+            "message" => $message
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Event $event)
-    {
-        return View::make('admin::events.show', compact('event'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Event $event)
     {
-        return View::make('admin::events.edit', compact('event'));
+        $guestEmails = "";
+
+        foreach ($event->guests as $guest) {
+            $guestEmails .= ',' . $guest->email;
+        }
+
+        return View::make('admin::events.edit', compact('event', 'guestEmails'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Event $event)
     {
-        $result = $event->update($request->all());
-        dd($result);
+        $currentGuests = [];
+        $removedEmails = [];
+
+        $update = $event->update($request->except('guests_email'));
+        $guestEmails = explode(",", $request->guests_email);
+
+        foreach ($event->guests as $guest) {
+            array_push($currentGuests, $guest->email);
+        }
+
+        $removedEmails = array_diff($currentGuests, $guestEmails);
+
+        if ($update) {
+            foreach ($guestEmails as $guestEmail) {
+                if (filter_var($guestEmail, FILTER_VALIDATE_EMAIL)) {
+                    $guest = $event->guests()->whereEmail($guestEmail)->get();
+
+                    if ($guest->isEmpty()) {
+                        $newGuest = $event->guests()->create(['email' => $guestEmail]);
+                        Mail::to($newGuest)->send(new EventInvitation($event, $newGuest->id));
+                    }
+                }
+            }
+
+            foreach ($removedEmails as $email) {
+                $guest = $event->guests()->whereEmail($email)->get()->first();
+                $guest->delete();
+            }
+
+            $message = "Event successfully Updated!";
+        } else {
+            $message = "Sorry, something went wrong. We are working on it and we'll get it fixed as soon as we can.";
+        }
+
+        return response()->json([
+            'status' => $update,
+            'message' => $message,
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Event $event)
     {
-        //
+        $event->delete();
+    }
+
+    public function show(Event $event)
+    {
+
+        $guests = "";
+        $eventStart = renderDate($event->start_dt, 'l, F d, Y h:i A');
+        $eventEnd = renderDate($event->end_dt, 'l, F d, Y h:i A');
+
+        foreach ($event->guests as $key => $guest) {
+            if ($key == 0) {
+                $guests .= $guest->email;
+            } else {
+                $guests .= ',' . $guest->email;
+            }
+        }
+
+        return response()->json([
+            'event' => $event,
+            'guests' => $guests,
+            'convertedDates' => [
+                'start' => $eventStart,
+                'end' => $eventEnd,
+            ]
+        ]);
     }
 }

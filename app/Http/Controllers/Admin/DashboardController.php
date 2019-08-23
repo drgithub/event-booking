@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Event;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Admin\BaseController as Controller;
 
@@ -10,6 +10,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return View::make('admin::index');
+        $event = Event::all();
+        return View::make('admin::index', compact('event'));
     }
 }

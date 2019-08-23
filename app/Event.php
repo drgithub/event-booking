@@ -3,14 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
-    protected $fillable = [
-        "name",
-        "location",
-        "description",
-        "start_dt",
-        "end_dt"
-    ];
+    use SoftDeletes;
+
+    protected $guarded = [];
+
+    public function guests()
+    {
+        return $this->hasMany('App\Guest');
+    }
 }
