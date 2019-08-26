@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Event;
 use App\Http\Controllers\Admin\BaseController as Controller;
 use Illuminate\Support\Facades\View;
 

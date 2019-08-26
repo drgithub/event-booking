@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
-    <base href="./">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
-    <meta name="author" content="Łukasz Holeczek">
-    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <meta name="description" content="Event Booking">
+    <meta name="author" content="Ralph Michael Cuevas">
+    <meta name="keyword" content="Event,Booking">
     <meta name="csrf-token" content="{{ csrf_token()  }}">
     <title>@yield('title')</title>
     <!-- Icons-->
@@ -53,7 +52,7 @@
     </button>
     <ul class="nav navbar-nav ml-auto">
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="display: flex;align-items: center">
           <img class="img-avatar" src="{{ asset('img/default2.png') }}" alt="admin@bootstrapmaster.com"> <span class="d-none d-md-inline">Admin&nbsp;&nbsp;&nbsp;&nbsp;</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
