@@ -55,3 +55,7 @@
 .actions button {
     width: 84px;
 }
+
+.slick-track {
+    margin-left: 0;
+}

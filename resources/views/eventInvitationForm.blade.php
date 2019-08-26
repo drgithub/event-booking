@@ -27,7 +27,9 @@
               <table>
                 <tr>
                   <td style="color: #888">When</td>
-                  <td style="padding-left: 20px">{{ renderDate($data->event->start_dt, 'l, F d, Y h:i A') . ' - ' . renderDate($data->event->end_dt, 'l, F d, Y h:i A')}}</td>
+                  <td style="padding-left: 20px">
+                    {{ renderDate($data->event->start_dt, 'l F d, Y h:i A') . ' - ' . renderDate($data->event->end_dt, 'l F d, Y h:i A')}}
+                  </td>
                 </tr>
                 <tr>
                   <td style="color: #888">Where</td>
@@ -45,21 +47,21 @@
               <br/>
               <div class="response-buttons">
                 <button 
-                  class="event-response btn {{ $data->status == 1 ? 'btn-success' : 'btn-outline-secondary' }}" 
+                  class="event-response btn {{ $data->status == 1 ? 'btn-success' : 'btn-outline-secondary text-dark' }}" 
                   value="1" 
                   style="width: 80px"
                 >
                   Yes
                 </button>
                 <button 
-                  class="event-response btn {{ $data->status == 2 ? 'btn-secondary' : 'btn-outline-secondary' }}" 
+                  class="event-response btn {{ $data->status == 2 ? 'btn-secondary' : 'btn-outline-secondary text-dark' }}" 
                   value="2" 
                   style="width: 80px"
                 >
                   Maybe
                 </button>
                 <button 
-                  class="event-response btn {{ $data->status == 3 ? 'btn-danger' : 'btn-outline-secondary' }}" 
+                  class="event-response btn {{ $data->status == 3 ? 'btn-danger' : 'btn-outline-secondary text-dark' }}" 
                   value="3" 
                   style="width: 80px"
                 >
