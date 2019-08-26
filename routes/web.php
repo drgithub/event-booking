@@ -14,7 +14,7 @@
 Auth::routes();
 
 Route::get('/', 'PublicController@home')->name('home');
-Route::get('/event', 'PrivateController@view')->name('event.private.view');
+Route::get('/event', 'PrivateController@view')->name('event.view');
 Route::get('/invitation-form', 'PrivateController@invitationForm')->name('event.invitation');
 Route::post('/invitation-response', 'PrivateController@respondToEvent')->name('event.response');
 

@@ -15,9 +15,15 @@
             <div class="mx-2">
                 <div class="card">
                     <div class="card-body">
-                        <div class="text-value">Title</div>
-                        <div>When</div>
-                        <small class="text-muted">Where</small>
+                        <div data-id="{{ $commingEvent->event->id }}" class="text-value" style="cursor: pointer">{{ $commingEvent->event->name }}</div>
+                        <div>
+                            @if (\Carbon\Carbon::parse($commingEvent->event->start_dt)->isToday())
+                                {{ \Carbon\Carbon::parse($commingEvent->event->start_dt)->format('h:i A') }}
+                            @else
+                                {{ \Carbon\Carbon::parse($commingEvent->event->start_dt)->toDayDateTimeString() }}
+                            @endif
+                        </div>
+                        <small class="text-muted">{{ $commingEvent->event->location }}</small>
                     </div>
                 </div>
             </div>
@@ -26,13 +32,19 @@
     <p class="h3">Pending Events</p>
     <hr />
     <div class="events">
-        @foreach ($filteredEvents['pending'] as $commingEvent)
+        @foreach ($filteredEvents['pending'] as $pendingEvent)
             <div class="mx-2">
                 <div class="card">
                     <div class="card-body">
-                        <div class="text-value">Title</div>
-                        <div>When</div>
-                        <small class="text-muted">Where</small>
+                        <div class="text-value">{{ $commingEvent->event->name }}</div>
+                        <div>
+                            @if (\Carbon\Carbon::parse($commingEvent->event->start_dt)->isToday())
+                                {{ \Carbon\Carbon::parse($commingEvent->event->start_dt)->format('h:i A') }}
+                            @else
+                                {{ \Carbon\Carbon::parse($commingEvent->event->start_dt)->toDayDateTimeString() }}
+                            @endif
+                        </div>
+                        <small class="text-muted">{{ $commingEvent->event->location }}</small>
                     </div>
                 </div>
             </div>
@@ -41,13 +53,19 @@
     <p class="h3">Missed Events</p>
     <hr />
     <div class="events">
-        @foreach ($filteredEvents['missed'] as $commingEvent)
+        @foreach ($filteredEvents['missed'] as $missedEvent)
             <div class="mx-2">
                 <div class="card">
                     <div class="card-body">
-                        <div class="text-value">Title</div>
-                        <div>When</div>
-                        <small class="text-muted">Where</small>
+                        <div class="text-value">{{ $commingEvent->event->name }}</div>
+                        <div>
+                            @if (\Carbon\Carbon::parse($commingEvent->event->start_dt)->isToday())
+                                {{ \Carbon\Carbon::parse($commingEvent->event->start_dt)->format('h:i A') }}
+                            @else
+                                {{ \Carbon\Carbon::parse($commingEvent->event->start_dt)->toDayDateTimeString() }}
+                            @endif
+                        </div>
+                        <small class="text-muted">{{ $commingEvent->event->location }}</small>
                     </div>
                 </div>
             </div>
@@ -56,13 +74,19 @@
     <p class="h3">Recent Events</p>
     <hr />
     <div class="events">
-        @foreach ($filteredEvents['recent'] as $commingEvent)
+        @foreach ($filteredEvents['recent'] as $recentEvent)
             <div class="mx-2">
                 <div class="card">
                     <div class="card-body">
-                        <div class="text-value">Title</div>
-                        <div>When</div>
-                        <small class="text-muted">Where</small>
+                        <div class="text-value">{{ $commingEvent->event->name }}</div>
+                        <div>
+                            @if (\Carbon\Carbon::parse($commingEvent->event->start_dt)->isToday())
+                                {{ \Carbon\Carbon::parse($commingEvent->event->start_dt)->format('h:i A') }}
+                            @else
+                                {{ \Carbon\Carbon::parse($commingEvent->event->start_dt)->toDayDateTimeString() }}
+                            @endif
+                        </div>
+                        <small class="text-muted">{{ $commingEvent->event->location }}</small>
                     </div>
                 </div>
             </div>
@@ -103,6 +127,11 @@
                     settings: "unslick"
                 }
             ]
+        });
+
+        $('.text-value').click(function() {
+            const eventID = $(this).data("id");
+            window.location.href = `/event/${eventID}`;
         });
     </script>
 @endsection
