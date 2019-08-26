@@ -34,4 +34,5 @@ Route::namespace('Account')->prefix('account')->group(function () {
   Route::get('/', 'DashboardController@index')->name('account.root');
   Route::get('/edit', 'IndexController@edit')->name('account.edit');
   Route::get('/profile', 'IndexController@profile')->name('account.profile');
+  Route::post('/update', 'IndexController@update')->name('account.update');
 });
